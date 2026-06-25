@@ -8,3 +8,4 @@ token_doctor.json
 token_patient.json 
 token_*.json 
 node_modules/ 
+email-service/node_modules/ 

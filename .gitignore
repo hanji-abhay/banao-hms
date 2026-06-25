@@ -7,3 +7,4 @@ credentials.json
 token_doctor.json 
 token_patient.json 
 token_*.json 
+node_modules/ 

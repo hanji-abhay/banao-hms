@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up — HMS</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background: #f0f4f8; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+        }
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+        }
+        h2 { color: #2d3748; margin-bottom: 0.5rem; }
+        p { color: #718096; margin-bottom: 2rem; }
+        .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .choice-btn {
+            padding: 1.5rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #2d3748;
+            transition: all 0.2s;
+        }
+        .choice-btn:hover { border-color: #667eea; background: #f7fafc; }
+        .choice-btn .icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .choice-btn h3 { font-size: 1rem; }
+        .link { text-align: center; margin-top: 1.5rem; font-size: 0.9rem; }
+        .link a { color: #667eea; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>🏥 Join HMS</h2>
+        <p>Sign up as a Doctor or Patient</p>
+        
+        <div class="choices">
+            <a href="{% url 'doctor_signup' %}" class="choice-btn">
+                <div class="icon">👨‍⚕️</div>
+                <h3>Doctor</h3>
+            </a>
+            <a href="{% url 'patient_signup' %}" class="choice-btn">
+                <div class="icon">🧑‍🦯</div>
+                <h3>Patient</h3>
+            </a>
+        </div>
+
+        <div class="link">
+            Already have an account? <a href="{% url 'login' %}">Login</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,10 +1,26 @@
 
-
+import requests as http_requests
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from .forms import SignupForm, LoginForm
 from .models import User
+
+def send_email_notification(trigger, email, name, extra_data={}):
+    try:
+        payload = {
+            'trigger': trigger,
+            'email': email,
+            'name': name,
+            **extra_data
+        }
+        http_requests.post(
+            'http://localhost:4000/dev/send-email',
+            json=payload,
+            timeout=5
+        )
+    except Exception as e:
+        print(f'Email service error: {e}')
 
 def signup_view(request):
     if request.method == 'POST':
@@ -12,6 +28,11 @@ def signup_view(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
+            send_email_notification(
+                'SIGNUP_WELCOME',
+                user.email,
+                user.username
+            )
             messages.success(request, 'Account created successfully!')
             # redirect based on role
             if user.is_doctor():

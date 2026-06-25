@@ -3,3 +3,7 @@ __pycache__/
 *.pyc 
 db.sqlite3 
 .env 
+credentials.json 
+token_doctor.json 
+token_patient.json 
+token_*.json 

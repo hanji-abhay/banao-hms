@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Dashboard — HMS</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f4f8; }
+        .navbar {
+            background: #48bb78;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+        .navbar h1 { font-size: 1.2rem; }
+        .navbar a { color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 0.4rem 1rem; border-radius: 6px; }
+        .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+        .card { background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); margin-bottom: 1.5rem; }
+        .card h2 { margin-bottom: 1rem; color: #2d3748; }
+        .doctors-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+        .doctor-card { background: #f7fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1.2rem; text-align: center; }
+        .doctor-card h3 { color: #2d3748; margin-bottom: 0.5rem; }
+        .doctor-card p { color: #718096; font-size: 0.85rem; margin-bottom: 1rem; }
+        .btn { padding: 0.6rem 1.2rem; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem; text-decoration: none; display: inline-block; }
+        .btn-green { background: #48bb78; color: white; }
+        .btn:hover { opacity: 0.9; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.8rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        th { color: #4a5568; font-weight: 600; background: #f7fafc; }
+        .badge { padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem; }
+        .badge-green { background: #c6f6d5; color: #276749; }
+        .messages { margin-bottom: 1rem; }
+        .message { padding: 0.8rem; border-radius: 8px; margin-bottom: 0.5rem; }
+        .message-success { background: #c6f6d5; color: #276749; }
+        .message-error { background: #fed7d7; color: #9b2c2c; }
+        .empty { color: #718096; text-align: center; padding: 2rem; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>🏥 HMS — {{ request.user.username }}</h1>
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+
+    <div class="container">
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="message {% if message.tags == 'error' %}message-error{% else %}message-success{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="card">
+            <h2>👨‍⚕️ Available Doctors</h2>
+            {% if doctors %}
+            <div class="doctors-grid">
+                {% for doctor in doctors %}
+                <div class="doctor-card">
+                    <h3>Dr. {{ doctor.username }}</h3>
+                    <p>{{ doctor.email }}</p>
+                    <a href="{% url 'view_doctor_slots' doctor.id %}" class="btn btn-green">
+                        View Slots
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+                <p class="empty">No doctors available yet 🏥</p>
+            {% endif %}
+        </div>
+
+        <div class="card">
+            <h2>📋 My Appointments</h2>
+            {% if my_appointments %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Doctor</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for apt in my_appointments %}
+                    <tr>
+                        <td>Dr. {{ apt.slot.doctor.username }}</td>
+                        <td>{{ apt.slot.date }}</td>
+                        <td>{{ apt.slot.start_time }} - {{ apt.slot.end_time }}</td>
+                        <td><span class="badge badge-green">Confirmed ✅</span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+                <p class="empty">No appointments booked yet. Find a doctor above! 👆</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

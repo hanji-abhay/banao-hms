@@ -19,7 +19,7 @@ def send_email_notification(trigger, email, name, extra_data={}):
         http_requests.post(
             'http://localhost:4000/dev/send-email',
             json=payload,
-            timeout=5
+            timeout=30
         )
     except Exception as e:
         print(f'Email service error: {e}')

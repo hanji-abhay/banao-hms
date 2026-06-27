@@ -10,3 +10,4 @@ token_*.json
 node_modules/ 
 email-service/node_modules/ 
 email-service/handler.py 
+test_email.py 
